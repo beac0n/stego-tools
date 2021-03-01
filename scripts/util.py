@@ -11,11 +11,11 @@ root_path = os.path.join(dir_path, "..")
 weights_path = os.path.join(root_path, "weights")
 
 bigGanPyTorchPath = os.path.join(root_path, "BigGAN-PyTorch")
+sys.path.append(bigGanPyTorchPath)
+
 tfHubPath = os.path.join(bigGanPyTorchPath, "TFHub")
+sys.path.append(tfHubPath)
 
 model_prefix = f"biggan-{resolution}-{batch_size}"
 model_path = os.path.join(weights_path, f"{model_prefix}.onnx")
 embeddings_file_path = os.path.join(weights_path, f"{model_prefix}-embeddings.npy")
-
-sys.path.append(bigGanPyTorchPath)
-sys.path.append(tfHubPath)
