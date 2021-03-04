@@ -76,15 +76,14 @@ def encode_bytes_in_image(image: Image, data_bytes: bytes):
     if (data_bytes_len * 8) + meta_len > max_total_len:
         raise ValueError(f"input value is too big. Max length is {(max_total_len-meta_len) / 8} bytes")
 
-    data_bytes_len_bits = list(map(int, bin(data_bytes_len)[2:]))
-    data_bytes_len_bits = [0] * (meta_len - len(data_bytes_len_bits)) + data_bytes_len_bits
+    bits = list(map(int, bin(data_bytes_len)[2:].zfill(meta_len)))
 
     data_array = np.frombuffer(data_bytes, dtype=np.uint8)
     data_bits = list(np.unpackbits(data_array))
 
-    img_bytes = list(image.tobytes())
+    bits += data_bits
 
-    bits = data_bytes_len_bits + data_bits
+    img_bytes = list(image.tobytes())
     for i in range(0, len(bits)):
         img_bytes[i] = (img_bytes[i] | 1) if bits[i] == 1 else (img_bytes[i] & 254)
 
